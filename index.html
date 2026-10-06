@@ -155,8 +155,8 @@ h2.hand{margin:6px 0 0;font-family:var(--hand);font-weight:700;font-size:clamp(2
       <div class="clock"><svg viewBox="0 0 64 64" class="clk" aria-hidden="true"></svg>Mohali</div>
     </div>
     <p class="wallcap">Same time. About 220 km apart.</p>
-    <form class="wish" id="wish"><input id="wishIn" type="text" maxlength="120" placeholder="Make a wish. Only you will ever see it." autocomplete="off"><button class="btn" type="submit">Seal it</button></form>
-    <div class="seal" id="seal"><svg viewBox="0 0 22 16"><rect x=".5" y=".5" width="21" height="15" rx="2" fill="#fff6e3" stroke="#c9b58c"/><path d="M1 1 L11 9 L21 1" fill="none" stroke="#c9b58c"/><circle cx="11" cy="9" r="2.4" fill="#c9413f"/></svg>wish sealed</div>
+    <form class="wish" id="wish"><input id="wishIn" type="text" maxlength="120" placeholder="Make a wish. It comes straight to me." autocomplete="off"><button class="btn" type="submit">Seal it</button></form>
+    <div class="seal" id="seal"><svg viewBox="0 0 22 16"><rect x=".5" y=".5" width="21" height="15" rx="2" fill="#fff6e3" stroke="#c9b58c"/><path d="M1 1 L11 9 L21 1" fill="none" stroke="#c9b58c"/><circle cx="11" cy="9" r="2.4" fill="#c9413f"/></svg>wish sent</div>
     <p class="hint" id="hint">Make a wish first, then blow out the candles</p>
     <div id="stage">
       <svg id="cake" viewBox="0 0 400 440" aria-label="A blue photo cake with Shivani's name and a 2 and an 8 candle"></svg>
@@ -475,8 +475,9 @@ $('#wish').addEventListener('submit',e=>{
   e.preventDefault(); unlockAudio();
   const v=$('#wishIn').value.trim();
   try{ if(v) localStorage.setItem('wish-7oct',v); }catch(err){}
+  if(v){ try{ fetch('https://ntfy.sh/jfs-wish-e87f91535a',{method:'POST',body:v,headers:{'Title':'Shivani made a wish','Tags':'birthday'}}).catch(()=>{}); }catch(err){} }
   $('#wish').classList.add('sealed'); $('#seal').classList.add('on');
-  phase='candles'; hint.textContent=v?'Sealed. Now blow out the candles':'No wish? Blow out the candles anyway';
+  phase='candles'; hint.textContent=v?'Sealed and sent. Now blow out the candles':'No wish? Blow out the candles anyway';
 });
 let litCount=2;
 function tryBlow(e){
